@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth scroll-pt-20">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCSU Herpetology Club</title>
+    
+    <!-- Google Fonts: Lora for headings (academic/classic feel), Inter for body (clean, readable) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS (via CDN for single-file implementation) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Lora', 'serif'],
+                    },
+                    colors: {
+                        forest: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#2e6044', // Main brand green
+                            800: '#234a35', // Darker brand green
+                            900: '#1a3626', // Deepest green
+                        },
+                        earth: {
+                            50: '#f9f8f6',
+                            100: '#f4f1ea', // Main background
+                            200: '#eae4d3',
+                            300: '#dcd1b6',
+                            800: '#5c4d3c', // Text dark brown
+                            900: '#4a3d30',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles for specific needs not covered by utility classes */
+        .hero-bg {
+            /* Fallback to color, then try to load image */
+            background-color: #1a3626;
+            background-image: linear-gradient(rgba(26, 54, 38, 0.7), rgba(26, 54, 38, 0.8)), url('https://images.unsplash.com/photo-1550130983-490333d4da3d?auto=format&fit=crop&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .glass-panel {
+            background: rgba(244, 241, 234, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        /* Style scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f4f1ea;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2e6044;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #234a35;
+        }
+    </style>
+</head>
+<body class="bg-earth-100 text-earth-800 font-sans antialiased flex flex-col min-h-screen">
+
+    <!-- 1. Header / Navigation Bar -->
+    <header class="fixed w-full top-0 z-50 glass-panel shadow-md transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo area -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" class="flex items-center gap-3">
+                        <span class="font-serif font-semibold text-2xl text-forest-800 tracking-tight">GCSU Herpetology</span>
+                    </a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#about" class="text-earth-800 hover:text-forest-600 px-3 py-2 text-sm font-medium transition-colors">About</a>
+                    <a href="#mission" class="text-earth-800 hover:text-forest-600 px-3 py-2 text-sm font-medium transition-colors">Mission</a>
+                    <a href="#events" class="text-earth-800 hover:text-forest-600 px-3 py-2 text-sm font-medium transition-colors">Events</a>
+                    <a href="#board" class="text-earth-800 hover:text-forest-600 px-3 py-2 text-sm font-medium transition-colors">Board</a>
+                    <a href="#ethics" class="text-earth-800 hover:text-forest-600 px-3 py-2 text-sm font-medium transition-colors">Ethics</a>
+                    <a href="#identification" class="text-earth-800 hover:text-forest-600 px-3 py-2 text-sm font-medium transition-colors">ID Guide</a>
+                    <a href="#gallery" class="text-earth-800 hover:text-forest-600 px-3 py-2 text-sm font-medium transition-colors">Gallery</a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-earth-800 hover:text-forest-700 focus:outline-none p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-earth-50 border-t border-earth-200 absolute w-full shadow-lg">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col">
+                <a href="#about" class="mobile-link text-earth-800 hover:bg-forest-50 hover:text-forest-700 block px-3 py-3 rounded-md text-base font-medium">About</a>
+                <a href="#mission" class="mobile-link text-earth-800 hover:bg-forest-50 hover:text-forest-700 block px-3 py-3 rounded-md text-base font-medium">Mission</a>
+                <a href="#events" class="mobile-link text-earth-800 hover:bg-forest-50 hover:text-forest-700 block px-3 py-3 rounded-md text-base font-medium">Events</a>
+                <a href="#board" class="mobile-link text-earth-800 hover:bg-forest-50 hover:text-forest-700 block px-3 py-3 rounded-md text-base font-medium">Board</a>
+                <a href="#ethics" class="mobile-link text-earth-800 hover:bg-forest-50 hover:text-forest-700 block px-3 py-3 rounded-md text-base font-medium">Ethics</a>
+                <a href="#identification" class="mobile-link text-earth-800 hover:bg-forest-50 hover:text-forest-700 block px-3 py-3 rounded-md text-base font-medium">ID Guide</a>
+                <a href="#gallery" class="mobile-link text-earth-800 hover:bg-forest-50 hover:text-forest-700 block px-3 py-3 rounded-md text-base font-medium">Gallery</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- 2. Introduction Section -->
+        <section id="about" class="hero-bg relative pt-32 pb-20 lg:pt-48 lg:pb-32 flex items-center justify-center min-h-[80vh]">
+            <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-earth-50">
+                <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 drop-shadow-lg text-white">
+                    Herpetology Club
+                </h1>
+                <p class="text-lg sm:text-xl md:text-2xl mb-8 font-light text-earth-100 max-w-3xl mx-auto drop-shadow-md">
+                    Welcome to the official Georgia College & State University Herpetology Club webpage.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="#events" class="bg-forest-500 hover:bg-forest-400 text-white font-semibold py-3 px-8 rounded-full transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                        Join Our Next Event
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Mission / Purpose Section -->
+        <section id="mission" class="py-20 bg-earth-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="font-serif text-3xl md:text-4xl font-bold text-forest-800 mb-4">Our Mission</h2>
+                    <div class="w-24 h-1 bg-forest-500 mx-auto rounded-full"></div>
+                    <p class="mt-6 text-lg text-earth-800 max-w-2xl mx-auto">
+                        To foster a community of students dedicated to the behavior, ecology, physiology, and conservation of reptiles and amphibians. 
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Core Goal 1 -->
+                    <div class="bg-white rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow border border-earth-200 text-center group">
+                        <div class="w-16 h-16 bg-forest-100 text-forest-700 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-forest-600 group-hover:text-white transition-colors duration-300">
+                            <i class="fa-solid fa-book-open text-2xl"></i>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold text-forest-900 mb-3">Education</h3>
+                        <p class="text-earth-800 text-sm">Expanding our knowledge of native species, their habitats, and their ecological significance through meetings and guest lectures.</p>
+                    </div>
+
+                    <!-- Core Goal 2 -->
+                    <div class="bg-white rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow border border-earth-200 text-center group">
+                        <div class="w-16 h-16 bg-forest-100 text-forest-700 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-forest-600 group-hover:text-white transition-colors duration-300">
+                            <i class="fa-solid fa-leaf text-2xl"></i>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold text-forest-900 mb-3">Conservation</h3>
+                        <p class="text-earth-800 text-sm">Actively participating in local conservation efforts to protect fragile ecosystems and the reptiles and amphibians that rely on them.</p>
+                    </div>
+
+                    <!-- Core Goal 3 -->
+                    <div class="bg-white rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow border border-earth-200 text-center group">
+                        <div class="w-16 h-16 bg-forest-100 text-forest-700 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-forest-600 group-hover:text-white transition-colors duration-300">
+                            <i class="fa-solid fa-magnifying-glass-location text-2xl"></i>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold text-forest-900 mb-3">Ethical Field Study</h3>
+                        <p class="text-earth-800 text-sm">Organizing field trips ("herping") that strictly adhere to best practices, ensuring minimal impact on wildlife.</p>
+                    </div>
+
+                    <!-- Core Goal 4 -->
+                    <div class="bg-white rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow border border-earth-200 text-center group">
+                        <div class="w-16 h-16 bg-forest-100 text-forest-700 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-forest-600 group-hover:text-white transition-colors duration-300">
+                            <i class="fa-solid fa-people-group text-2xl"></i>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold text-forest-900 mb-3">Community</h3>
+                        <p class="text-earth-800 text-sm">Building a supportive, inclusive network of students who share a passion for nature and wildlife conservation.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Monthly Calendar / Events Section -->
+        <section id="events" class="py-20 bg-earth-200">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12 border-b-2 border-forest-800/20 pb-4">
+                    <h2 class="font-serif text-3xl md:text-4xl font-bold text-forest-800 mb-2">Upcoming Events</h2>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Event 1 -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm flex flex-col md:flex-row items-start md:items-center gap-6 hover:shadow-md transition-shadow border-l-4 border-forest-500">
+                        <div class="bg-earth-100 rounded-lg p-4 text-center min-w-[100px] shadow-inner">
+                            <span class="block text-forest-800 font-bold text-sm uppercase">NOV</span>
+                            <span class="block text-forest-900 font-serif text-3xl font-bold">5</span>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="text-sm text-forest-600 font-semibold mb-1 tracking-wide uppercase"><i class="fa-solid fa-users mr-2"></i>General Meeting</div>
+                            <h3 class="text-xl font-bold text-earth-900 mb-2">First Meeting</h3>
+                            <p class="text-earth-800 text-sm mb-3">Join us for our first ever meeting! We will introduce club members & vote for club officers.</p>
+                            <div class="flex items-center text-sm text-earth-800 font-medium">
+                                <i class="fa-regular fa-clock mr-2 text-forest-500"></i> 6:00 PM - 7:30 PM
+                                <span class="mx-3 text-earth-300">|</span>
+                                <i class="fa-solid fa-location-dot mr-2 text-forest-500"></i> Arts & Science Building, Rm TBD
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Event 3 -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm flex flex-col md:flex-row items-start md:items-center gap-6 hover:shadow-md transition-shadow border-l-4 border-forest-500">
+                        <div class="bg-earth-100 rounded-lg p-4 text-center min-w-[100px] shadow-inner">
+                            <span class="block text-forest-800 font-bold text-sm uppercase">NOV</span>
+                            <span class="block text-forest-900 font-serif text-3xl font-bold">TBD</span>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="text-sm text-forest-600 font-semibold mb-1 tracking-wide uppercase"><i class="fa-solid fa-users mr-2"></i>General Meeting</div>
+                            <h3 class="text-xl font-bold text-earth-900 mb-2">Venomous Snakes Identification Workshop</h3>
+                            <p class="text-earth-800 text-sm mb-3">Learn how to safely identify Georgia's venomous species from non-venomous lookalikes.</p>
+                            <div class="flex items-center text-sm text-earth-800 font-medium">
+                                <i class="fa-regular fa-clock mr-2 text-forest-500"></i> 6:00 PM - 7:30 PM
+                                <span class="mx-3 text-earth-300">|</span>
+                                <i class="fa-solid fa-location-dot mr-2 text-forest-500"></i> Science Building, Rm TBD
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Meet the Board Members Section -->
+        <section id="board" class="py-20 bg-earth-50 relative overflow-hidden">
+            <!-- Decorative background element -->
+            <div class="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-forest-100 rounded-full opacity-50 blur-3xl z-0"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center mb-16">
+                    <h2 class="font-serif text-3xl md:text-4xl font-bold text-forest-800 mb-4">Meet the Officers</h2>
+                    <div class="w-24 h-1 bg-forest-500 mx-auto rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Board Member 1 -->
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
+                        <div class="relative w-1/2 mx-auto mt-6 rounded-lg aspect-[3/4] overflow-hidden bg-earth-200">
+                            <!-- Placeholder Image (Swap src) -->
+                            <img src="https://placehold.co/400x533/2E6044/F4F1EA?text=President" alt="President" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-6 text-center">
+                            <p class="text-forest-600 text-sm font-bold tracking-wider uppercase mb-1">President</p>
+                            <h3 class="font-serif text-xl font-bold text-earth-900">Lilly Dunn</h3>
+                        </div>
+                    </div>
+
+                    <!-- Board Member 2 -->
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
+                        <div class="relative w-1/2 mx-auto mt-6 rounded-lg aspect-[3/4] overflow-hidden bg-earth-200">
+                            <img src="https://placehold.co/400x533/2E6044/F4F1EA?text=Vice+President" alt="Vice President" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-6 text-center">
+                            <p class="text-forest-600 text-sm font-bold tracking-wider uppercase mb-1">Vice President</p>
+                            <h3 class="font-serif text-xl font-bold text-earth-900">TBD</h3>
+                        </div>
+                    </div>
+
+                    <!-- Board Member 3 -->
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
+                        <div class="relative w-1/2 mx-auto mt-6 rounded-lg aspect-[3/4] overflow-hidden bg-earth-200">
+                            <img src="https://placehold.co/400x533/2E6044/F4F1EA?text=Treasurer" alt="Treasurer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-6 text-center">
+                            <p class="text-forest-600 text-sm font-bold tracking-wider uppercase mb-1">Treasurer</p>
+                            <h3 class="font-serif text-xl font-bold text-earth-900">TBD</h3>
+                        </div>
+                    </div>
+
+                    <!-- Board Member 4 -->
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
+                        <div class="relative w-1/2 mx-auto mt-6 rounded-lg aspect-[3/4] overflow-hidden bg-earth-200">
+                            <img src="https://placehold.co/400x533/2E6044/F4F1EA?text=Secretary" alt="Secretary" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-6 text-center">
+                            <p class="text-forest-600 text-sm font-bold tracking-wider uppercase mb-1">Secretary</p>
+                            <h3 class="font-serif text-xl font-bold text-earth-900">TBD</h3>
+                        </div>
+                    </div>
+
+                    <!-- Board Member 5 -->
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
+                        <div class="relative w-1/2 mx-auto mt-6 rounded-lg aspect-[3/4] overflow-hidden bg-earth-200">
+                            <img src="https://placehold.co/400x533/2E6044/F4F1EA?text=Outreach+Manager" alt="Outreach Manager" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-6 text-center">
+                            <p class="text-forest-600 text-sm font-bold tracking-wider uppercase mb-1">Outreach Manager</p>
+                            <h3 class="font-serif text-xl font-bold text-earth-900">TBD</h3>
+                        </div>
+                    </div>
+
+                    <!-- Board Member 6 -->
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
+                        <div class="relative w-1/2 mx-auto mt-6 rounded-lg aspect-[3/4] overflow-hidden bg-earth-200">
+                            <img src="https://codehs.com/uploads/2e0dec3c891a98edbae5329286938188" alt="Advisor" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-6 text-center">
+                            <p class="text-forest-600 text-sm font-bold tracking-wider uppercase mb-1">Advisor</p>
+                            <h3 class="font-serif text-xl font-bold text-earth-900">Dr. Dominic DeSantis</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. How to Ethically Herp Section -->
+        <section id="ethics" class="py-20 bg-forest-900 text-earth-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col lg:flex-row gap-12 items-center">
+                    <div class="lg:w-1/2">
+                        <h2 class="font-serif text-3xl md:text-4xl font-bold text-white mb-6">How to Ethically Herp</h2>
+                        <p class="text-earth-200 mb-8 text-lg font-light">
+                            Our primary rule in the field is respect. The animals and habitats we visit are fragile. We follow these ethical guidelines:
+                        </p>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-forest-700 flex items-center justify-center border border-forest-500 mt-1">
+                                    <i class="fa-solid fa-leaf text-forest-300"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="text-xl font-bold text-white mb-1">Leave No Trace</h4>
+                                    <p class="text-earth-300 text-sm">Pack out all trash, stay on established trails where possible, and avoid trampling sensitive vegetation.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-forest-700 flex items-center justify-center border border-forest-500 mt-1">
+                                    <i class="fa-solid fa-rotate-left text-forest-300"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="text-xl font-bold text-white mb-1">Put It Back How You Found It</h4>
+                                    <p class="text-earth-300 text-sm">If you flip a log, rock, or tin piece to look for animals, always carefully place it back exactly as it was. It serves as a microhabitat roof!</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-forest-700 flex items-center justify-center border border-forest-500 mt-1">
+                                    <i class="fa-solid fa-hand-holding-heart text-forest-300"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="text-xl font-bold text-white mb-1">Minimize Animal Stress</h4>
+                                    <p class="text-earth-300 text-sm">Observe without handling whenever possible. If handling is necessary for identification, do it quickly, with clean hands, and release the animal exactly where found.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-forest-700 flex items-center justify-center border border-forest-500 mt-1">
+                                    <i class="fa-solid fa-scale-balanced text-forest-300"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="text-xl font-bold text-white mb-1">Respect Wildlife Laws</h4>
+                                    <p class="text-earth-300 text-sm">Never trespass on private property. Know and follow all local, state, and federal wildlife protection laws. Collecting for personal pets is strictly prohibited on club trips.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/2 w-full mt-10 lg:mt-0">
+                        <!-- Representative image for conservation/ethics -->
+                        <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-forest-800">
+                            <!-- Unsplash placeholder of a forest floor / herping environment -->
+                            <img src="https://codehs.com/uploads/d1f1ba8d7b738ad5757b5b5241dcb7d9" alt="Forest Floor" class="w-full h-[500px] object-cover opacity-90">
+                            <div class="absolute inset-0 bg-gradient-to-t from-forest-900/80 to-transparent flex items-end p-6">
+                                <p class="text-white italic text-sm border-l-2 border-forest-400 pl-3">"Take nothing but pictures, leave nothing but footprints."</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Species Identification Section -->
+        <section id="identification" class="py-20 bg-earth-50 border-t border-b border-earth-200">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div class="w-16 h-16 bg-forest-100 text-forest-700 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
+                    <i class="fa-solid fa-magnifying-glass text-2xl"></i>
+                </div>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-forest-800 mb-4">Species Identification</h2>
+                <div class="w-24 h-1 bg-forest-500 mx-auto rounded-full mb-6"></div>
+                <p class="text-lg text-earth-800 mb-8 max-w-2xl mx-auto">
+                    Need help identifying a reptile or amphibian you found in Georgia? Use this external identification guide to browse high-quality photos, range maps, and detailed characteristics of native species.
+                </p>
+                <a href="https://srelherp.uga.edu/reptiles-and-amphibians-of-south-carolina-and-georgia/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-forest-600 hover:bg-forest-500 text-white font-semibold py-3 px-8 rounded-full transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-1">
+                    <span>Open ID Guide</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- 7. Photos Collected Throughout the Years (Gallery) -->
+        <section id="gallery" class="py-20 bg-earth-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="font-serif text-3xl md:text-4xl font-bold text-forest-800 mb-4">Field Memories</h2>
+                    <div class="w-24 h-1 bg-forest-500 mx-auto rounded-full"></div>
+                    <p class="mt-6 text-lg text-earth-800 max-w-2xl mx-auto">
+                        Highlights from our past excursions, member discoveries, and club events.
+                    </p>
+                </div>
+
+                <!-- Gallery Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 auto-rows-[250px]">
+                    <!-- Gallery Item 1 -->
+                    <div class="group relative rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+                        <!-- Swap with real image -->
+                        <img src="https://images.unsplash.com/photo-1550853024-fae8cd4be47f?auto=format&fit=crop&q=80" alt="Frog on leaf" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-forest-900/90 via-forest-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <p class="text-white font-medium">Add your photo caption here.</p>
+                        </div>
+                    </div>
+
+                    <!-- Gallery Item 2 -->
+                    <div class="group relative rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 md:col-span-2">
+                        <img src="https://images.unsplash.com/photo-1596700816993-9c86a3d90616?auto=format&fit=crop&q=80" alt="Club Group" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-forest-900/90 via-forest-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <p class="text-white font-medium">Add your photo caption here.</p>
+                        </div>
+                    </div>
+
+                    <!-- Gallery Item 3 -->
+                    <div class="group relative rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+                        <img src="https://placehold.co/600x400/2E6044/F4F1EA?text=Insert+Photo" alt="Snake" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-forest-900/90 via-forest-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <p class="text-white font-medium">Add your photo caption here.</p>
+                        </div>
+                    </div>
+
+                    <!-- Gallery Item 4 -->
+                    <div class="group relative rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+                        <img src="https://placehold.co/600x400/234A35/F4F1EA?text=Insert+Photo" alt="Turtle" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-forest-900/90 via-forest-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <p class="text-white font-medium">Add your photo caption here.</p>
+                        </div>
+                    </div>
+
+                    <!-- Gallery Item 5 -->
+                    <div class="group relative rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+                        <img src="https://placehold.co/600x400/1A3626/F4F1EA?text=Insert+Photo" alt="Salamander" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-forest-900/90 via-forest-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <p class="text-white font-medium">Add your photo caption here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 8. Footer -->
+    <footer class="bg-forest-900 text-earth-200 border-t-4 border-forest-700 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <!-- Club Info -->
+                <div class="col-span-1">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="font-serif font-semibold text-xl text-white tracking-tight">GCSU Herpetology</span>
+                    </div>
+                    <p class="text-sm text-earth-300 mb-6 leading-relaxed">
+                        Georgia College & State University's official organization for the behavior, ecology, physiology, and conservation of reptiles and amphibia.
+                    </p>
+                </div>
+
+                <!-- Contact & Links -->
+                <div class="col-span-1">
+                    <h3 class="text-white font-bold mb-6 uppercase tracking-wider text-sm">Get in Touch</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li>
+                            <a href="mailto:gcsuherpetologyclub@gmail.com" class="hover:text-forest-400 transition-colors flex items-center gap-2">
+                                <i class="fa-solid fa-envelope w-4"></i> gcsuherpetologyclub@gmail.com
+                            </a>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-location-dot w-4 mt-1"></i>
+                            <span>Georgia College & State University<br>Milledgeville, GA 31061</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Social Media -->
+                <div class="col-span-1">
+                    <h3 class="text-white font-bold mb-6 uppercase tracking-wider text-sm">Connect With Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-forest-800 flex items-center justify-center hover:bg-[#E1306C] hover:text-white transition-all transform hover:scale-110 text-earth-200" aria-label="Instagram">
+                            <i class="fa-brands fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-forest-800 flex items-center justify-center hover:bg-[#00AFF0] hover:text-white transition-all transform hover:scale-110 text-earth-200" aria-label="GroupMe">
+                            <i class="fa-solid fa-comment-dots text-xl"></i>
+                        </a>
+                    </div>
+                    <p class="text-xs text-earth-400 mt-4 italic">Join our GroupMe for the latest meeting updates and impromptu field trip announcements!</p>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="border-t border-forest-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-earth-400">
+                <p>&copy; 2026 GCSU Herpetology Club. All rights reserved.</p>
+                <p class="mt-2 md:mt-0">"Let's get to herping"</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Minimal JavaScript for Interactivity -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile Menu Toggle
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+            const icon = btn.querySelector('i');
+
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+                if (menu.classList.contains('hidden')) {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                } else {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                }
+            });
+
+            // Close mobile menu when a link is clicked
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    menu.classList.add('hidden');
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                });
+            });
+
+            // Sticky Header styling on scroll
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.remove('glass-panel', 'py-0');
+                    header.classList.add('bg-earth-100', 'shadow-md');
+                } else {
+                    header.classList.add('glass-panel');
+                    header.classList.remove('bg-earth-100');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
